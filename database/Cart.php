@@ -104,4 +104,15 @@ class Cart{
             return $result;
         }
     }
+    
+    
+    public function insertProduct($item_brand, $item_name, $item_price, $item_image){
+        $sql = ("INSERT INTO product (item_brand, item_name, item_price, item_image) VALUES ($item_brand, $item_name, $item_price, $item_image)");
+        $result = $this->db->con->query($sql);
+        if($result){
+            header("Location:" . $_SERVER['PHP_SELF']);
+        }
+        print_r($result);
+        return $result;
+    }
 }

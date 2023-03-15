@@ -1,3 +1,9 @@
+<?php
+include('./functions.php');
+if (isset($_POST['delete-cart'])){
+    $deletedrecord = $Cart->deleteCart($_POST['item_id']);
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -27,7 +33,6 @@
                 </thead>
                 <tbody>
                     <?php
-                    include('./functions.php');
                     $item_id = $_GET['item_id'] ?? 1;
                     foreach ($product->getData() as $item) :
                     ?>
@@ -41,12 +46,12 @@
                             <td class="d-flex gap-2">
                                 <form method="post">
                                     <input type="hidden" value="<?= $item['item_id'] ?? 0 ?>" name="item_id">
-                                    <button type="submit" name="item-delete" class="btn btn-danger">Delete</button>
+                                    <button type="submit" name="delete-cart" class="btn btn-danger">Delete</button>
                                 </form>
-                                <form method="post">
+                                <!-- <form method="post">
                                     <input type="hidden" value="<?= $item['item_id'] ?? 0 ?>" name="item_id">
                                     <button type="submit" name="item-edit" class="btn btn-warning">Edit</button>
-                                </form>
+                                </form> -->
                             </td>
                         </tr>
                     <?php
@@ -61,19 +66,19 @@
             <form method="post">
                 <div class="mb-3">
                     <label for="brand" class="form-label">Brand [Apple, Samsung, Redmi]</label>
-                    <input type="text" name="item_brand" class="form-control" id="brand" aria-describedby="emailHelp">
+                    <input type="text" name="item_brand" class="form-control" id="brand" aria-describedby="emailHelp" required>
                 </div>
                 <div class="mb-3">
                     <label for="name" class="form-label">Name</label>
-                    <input type="text" name="item_name" class="form-control" id="name">
+                    <input type="text" name="item_name" class="form-control" id="name" required>
                 </div>
                 <div class="mb-3">
                     <label for="price" class="form-label">Price</label>
-                    <input type="text" name="item_price" class="form-control" id="price">
+                    <input type="text" name="item_price" class="form-control" id="price" required>
                 </div>
                 <div class="mb-3">
                     <label for="image" class="form-label">Image</label>
-                    <input type="file" name="item_image" class="form-control" id="image">
+                    <input type="file" name="item_image" class="form-control" id="image" required>
                 </div>
                 <button type="submit" name="add_item" class="btn btn-primary">Submit</button>
             </form>
@@ -85,11 +90,14 @@
 
 
 <?php
+
 if(isset($_POST['add_item'])){
     $item_brand = $_POST['item_brand'];
     $item_name = $_POST['item_name'];
     $item_price = $_POST['item_price'];
     $item_image = $_POST['item_image'];
     
+    $result = $Cart->insertProduct($item_brand, $item_name, $item_price, $item_image);
+    print_r($result);
 }
 ?>
