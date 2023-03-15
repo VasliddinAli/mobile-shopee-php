@@ -64,6 +64,7 @@ if(isset($_POST['update_item'])){
         move_uploaded_file($tmp_name, "$uploads_dir/$name");
         $item_image = "$uploads_dir/$name";
         $result = $Cart->updateProduct($item_brand, $item_name, $item_price, $item_image);
+        unlink($row['item_image']);
     }else{
         $result = $Cart->updateProduct($item_brand, $item_name, $item_price, $row['item_image']);
     }

@@ -117,12 +117,13 @@ class Cart{
 
     // delete products item using cart item id
     public function deleteProduct($item_id, $table = 'product'){
-        
-        $res = $this->db->con->query("DELETE FROM {$table} WHERE item_id={$item_id}");
-        if($res){
-            $result = $this->getProduct();
-            $unlink = unlink($result['item_image']);;
-            if($unlink){
+        $sql = "SELECT * FROM {$table} WHERE item_id=$item_id";
+        $result = $this->db->con->query($sql);
+        $row = $result->fetch_assoc();
+        $unlink = unlink($row['item_image']);
+        if($unlink){
+            $res = $this->db->con->query("DELETE FROM {$table} WHERE item_id={$item_id}");
+            if($res){
                 header("Location:" . $_SERVER['PHP_SELF']);
             }
         }
