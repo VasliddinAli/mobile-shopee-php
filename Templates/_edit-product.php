@@ -2,13 +2,11 @@
 ob_start();
 include('./functions.php');
 
-$result = $Cart->getProduct();
-$row = $result->fetch_assoc();
+$row = $Cart->getProduct();
 print_r($row);
 $item_brand = $row['item_brand'];
 $item_name = $row['item_name'];
 $item_price = $row['item_price'];
-$item_image = $row['item_image'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -41,7 +39,7 @@ $item_image = $row['item_image'];
                 </div>
                 <div class="mb-3">
                     <label for="image" class="form-label">Image</label>
-                    <input type="file" value="<?= $item_image?>" name="item_image" class="form-control" id="image">
+                    <input type="file" name="item_image" class="form-control" id="image">
                 </div>
                 <button type="submit" name="update_item" class="btn btn-primary">Update</button>
             </form>
@@ -53,20 +51,21 @@ $item_image = $row['item_image'];
 
 
 <?php
-    
-
 
 if(isset($_POST['update_item'])){
     $item_brand = $_POST['item_brand'];
     $item_name = $_POST['item_name'];
     $item_price = $_POST['item_price'];
-    
-    $uploads_dir = './assets/products';
-    $tmp_name = $_FILES["item_image"]["tmp_name"];
-    $name = $_FILES["item_image"]["name"];
-    move_uploaded_file($tmp_name, "$uploads_dir/$name");
-    $item_image = "$uploads_dir/$name";
 
-    $result = $Cart->updateProduct($item_brand, $item_name, $item_price, $item_image);
+    if($_FILES['item_image']['name']){
+        $uploads_dir = './assets/products';
+        $tmp_name = $_FILES["item_image"]["tmp_name"];
+        $name = $_FILES["item_image"]["name"];
+        move_uploaded_file($tmp_name, "$uploads_dir/$name");
+        $item_image = "$uploads_dir/$name";
+        $result = $Cart->updateProduct($item_brand, $item_name, $item_price, $item_image);
+    }else{
+        $result = $Cart->updateProduct($item_brand, $item_name, $item_price, $row['item_image']);
+    }
 }
 ?>

@@ -2,7 +2,7 @@
 ob_start();
 include('./functions.php');
 if (isset($_POST['delete-cart'])){
-    $deletedrecord = $Cart->deleteProducts($_POST['item_id']);
+    $deletedrecord = $Cart->deleteProduct($_POST['item_id']);
 }
 ?>
 <!DOCTYPE html>

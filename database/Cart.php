@@ -48,7 +48,7 @@ class Cart{
     }
 
     // delete cart item using cart item id
-    public function deleteCart($item_id = null, $table = 'cart'){
+    public function deleteCart($item_id, $table = 'cart'){
         if($item_id != null){
             $result = $this->db->con->query("DELETE FROM {$table} WHERE item_id={$item_id}");
             if($result){
@@ -59,7 +59,7 @@ class Cart{
     }
 
     // delete cart item using wishlist item id
-    public function deleteWishlist($item_id = null, $table = 'wishlist'){
+    public function deleteWishlist($item_id, $table = 'wishlist'){
         if($item_id != null){
             $result = $this->db->con->query("DELETE FROM {$table} WHERE item_id={$item_id}");
             if($result){
@@ -91,7 +91,7 @@ class Cart{
     }
 
     // Save for later
-    public function saveForLater($item_id = null, $saveTable = "wishlist", $fromTable = 'cart'){
+    public function saveForLater($item_id, $saveTable = "wishlist", $fromTable = 'cart'){
         if($item_id != null){
             $query = "INSERT INTO {$saveTable} SELECT * FROM {$fromTable} WHERE item_id = {$item_id};";
             $query .= "DELETE FROM {$fromTable} WHERE item_id = {$item_id};";
@@ -116,13 +116,15 @@ class Cart{
     }
 
     // delete products item using cart item id
-    public function deleteProducts($item_id = null, $table = 'product'){
-        if($item_id != null){
-            $result = $this->db->con->query("DELETE FROM {$table} WHERE item_id={$item_id}");
-            if($result){
+    public function deleteProduct($item_id, $table = 'product'){
+        
+        $res = $this->db->con->query("DELETE FROM {$table} WHERE item_id={$item_id}");
+        if($res){
+            $result = $this->getProduct();
+            $unlink = unlink($result['item_image']);;
+            if($unlink){
                 header("Location:" . $_SERVER['PHP_SELF']);
             }
-            return $result;
         }
     }
     
@@ -131,7 +133,8 @@ class Cart{
         $item_id = $_GET['item_id'];
         $sql = "SELECT * FROM product WHERE item_id=$item_id";
         $result = $this->db->con->query($sql);
-        return $result;
+        $row = $result->fetch_assoc();
+        return $row;
     }
     
     // get products item using cart item id
