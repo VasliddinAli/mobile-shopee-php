@@ -105,14 +105,43 @@ class Cart{
         }
     }
     
-    
+    // Admin add product
     public function insertProduct($item_brand, $item_name, $item_price, $item_image){
-        $sql = ("INSERT INTO product (item_brand, item_name, item_price, item_image) VALUES ($item_brand, $item_name, $item_price, $item_image)");
+        $sql = ("INSERT INTO product (item_brand, item_name, item_price, item_image) VALUES ('$item_brand', '$item_name', '$item_price', '$item_image')");
         $result = $this->db->con->query($sql);
         if($result){
             header("Location:" . $_SERVER['PHP_SELF']);
         }
-        print_r($result);
         return $result;
+    }
+
+    // delete products item using cart item id
+    public function deleteProducts($item_id = null, $table = 'product'){
+        if($item_id != null){
+            $result = $this->db->con->query("DELETE FROM {$table} WHERE item_id={$item_id}");
+            if($result){
+                header("Location:" . $_SERVER['PHP_SELF']);
+            }
+            return $result;
+        }
+    }
+    
+    // get products item using cart item id
+    public function getProduct(){
+        $item_id = $_GET['item_id'];
+        $sql = "SELECT * FROM product WHERE item_id=$item_id";
+        $result = $this->db->con->query($sql);
+        return $result;
+    }
+    
+    // get products item using cart item id
+    public function updateProduct($item_brand, $item_name, $item_price, $item_image){
+        $item_id = $_GET['item_id'];
+        $sql_update = "UPDATE `product` SET `item_brand` = '$item_brand', `item_name` = '$item_name', `item_price` = '$item_price', `item_image` = '$item_image' WHERE `product`.`item_id` = $item_id;";
+        if ($this->db->con->query($sql_update) == TRUE) {
+            header("Location: admin.php");
+        } else {
+            echo "Error updating record: " . $this->db->con->error;
+        }
     }
 }

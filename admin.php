@@ -1,7 +1,8 @@
 <?php
+ob_start();
 include('./functions.php');
 if (isset($_POST['delete-cart'])){
-    $deletedrecord = $Cart->deleteCart($_POST['item_id']);
+    $deletedrecord = $Cart->deleteProducts($_POST['item_id']);
 }
 ?>
 <!DOCTYPE html>
@@ -48,10 +49,11 @@ if (isset($_POST['delete-cart'])){
                                     <input type="hidden" value="<?= $item['item_id'] ?? 0 ?>" name="item_id">
                                     <button type="submit" name="delete-cart" class="btn btn-danger">Delete</button>
                                 </form>
-                                <!-- <form method="post">
+                                <form method="get">
                                     <input type="hidden" value="<?= $item['item_id'] ?? 0 ?>" name="item_id">
-                                    <button type="submit" name="item-edit" class="btn btn-warning">Edit</button>
-                                </form> -->
+                                    
+                                    <a href="edit.php?item_id=<?= $item['item_id'] ?? 0 ?>" class="btn btn-warning">Edit</a>
+                                </form>
                             </td>
                         </tr>
                     <?php
@@ -63,10 +65,10 @@ if (isset($_POST['delete-cart'])){
 
 
         <div class="form">
-            <form method="post">
+            <form method="post" enctype="multipart/form-data">
                 <div class="mb-3">
                     <label for="brand" class="form-label">Brand [Apple, Samsung, Redmi]</label>
-                    <input type="text" name="item_brand" class="form-control" id="brand" aria-describedby="emailHelp" required>
+                    <input type="text" name="item_brand" class="form-control" id="brand" required>
                 </div>
                 <div class="mb-3">
                     <label for="name" class="form-label">Name</label>
@@ -90,14 +92,17 @@ if (isset($_POST['delete-cart'])){
 
 
 <?php
-
 if(isset($_POST['add_item'])){
     $item_brand = $_POST['item_brand'];
     $item_name = $_POST['item_name'];
     $item_price = $_POST['item_price'];
-    $item_image = $_POST['item_image'];
     
+    $uploads_dir = './assets/products';
+    $tmp_name = $_FILES["item_image"]["tmp_name"];
+    $name = $_FILES["item_image"]["name"];
+    move_uploaded_file($tmp_name, "$uploads_dir/$name");
+    $item_image = "$uploads_dir/$name";
+
     $result = $Cart->insertProduct($item_brand, $item_name, $item_price, $item_image);
-    print_r($result);
 }
 ?>
