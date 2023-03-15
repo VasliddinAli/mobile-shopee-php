@@ -17,7 +17,7 @@ if (isset($_POST['top_sale_submit'])) {
             <?php foreach ($product_shuffle as $item) { ?>
                 <div class="item py-2">
                     <div class="product font-rale">
-                        <a href="<?php printf('%s?item_id=%s', 'product.php', $item['item_id'])?>"><img src="<?= $item['item_image'] ?>" alt="product1" class="img-fluid"></a>
+                        <a href="<?php printf('%s?item_id=%s', 'product.php', $item['item_id'])?>"><img src="<?= $item['item_image'] ?>"  width="200px" height="200px"></a>
                         <div class="text-center">
                             <h6><?= $item['item_name'] ?></h6>
                             <div class="rating text-warning font-size-12">

@@ -1,4 +1,5 @@
 <?php
+session_start();
 
 // PHP cart class
 class Cart{
@@ -146,6 +147,23 @@ class Cart{
             header("Location: admin.php");
         } else {
             echo "Error updating record: " . $this->db->con->error;
+        }
+    }
+
+
+    // ADMIN or USER check
+    public function getUsers($email, $password){
+        $sql = "SELECT * FROM user";
+        $result = $this->db->con->query($sql);
+        foreach($result as $row){
+            if($email == $row['email'] && $password == $row['password']){
+                if($row['role'] == 'admin'){
+                    $_SESSION['admin'] = $row;
+                    header("Location:" . $_SERVER['PHP_SELF']);
+                }else{
+                    echo "You are not admin :(";
+                }
+            }
         }
     }
 }
