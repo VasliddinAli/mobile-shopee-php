@@ -9,6 +9,7 @@ if(isset($_POST['add_item'])){
     $item_brand = $_POST['item_brand'];
     $item_name = $_POST['item_name'];
     $item_price = $_POST['item_price'];
+
     $uploads_dir = './assets/products';
     $tmp_name = $_FILES["item_image"]["tmp_name"];
     $name = $_FILES["item_image"]["name"];
@@ -90,7 +91,6 @@ if(isset($_POST['submit_admin'])){
                                     </form>
                                     <form method="get">
                                         <input type="hidden" value="<?= $item['item_id'] ?? 0 ?>" name="item_id">
-                                        
                                         <a href="edit.php?item_id=<?= $item['item_id'] ?? 0 ?>" class="btn btn-warning">Edit</a>
                                     </form>
                                 </td>

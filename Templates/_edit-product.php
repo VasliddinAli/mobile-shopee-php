@@ -3,7 +3,6 @@ ob_start();
 include('./functions.php');
 
 $row = $Cart->getProduct();
-print_r($row);
 $item_brand = $row['item_brand'];
 $item_name = $row['item_name'];
 $item_price = $row['item_price'];
